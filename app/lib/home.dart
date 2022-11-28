@@ -125,9 +125,9 @@ class HomePage extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: const Text('바코드 스캔'),
+              title: const Text('이미지 스캔'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pushNamed(context, '/scan');
               },
             ),
             ListTile(
@@ -139,7 +139,7 @@ class HomePage extends StatelessWidget {
             ListTile(
               title: const Text('레시피 보기'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pushNamed(context, '/recipe');
               },
             ),
             ListTile(
