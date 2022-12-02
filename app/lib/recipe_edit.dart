@@ -70,10 +70,10 @@ class RecipeEditPage extends StatelessWidget {
                       child: Column(
                           children: [
                             Container(
-                              child: Image.network(
-                                recipe.image,
-                                width: 400,
-                              ),
+                              // child: Image.network(
+                              //   recipe.image,
+                              //   width: 400,
+                              // ),
                               padding: const EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 10.0),
                             ),
                             TextFormField(

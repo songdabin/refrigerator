@@ -44,7 +44,7 @@ class RecipeAddPage extends StatelessWidget {
                     height: 200,
                     child: RecipeAdd(
                       addRecipe: (name, detail) =>
-                          appState.addProductToProducts(name, detail),
+                          appState.addRecipe(name, detail),
                       recipes: appState.recipes,
                     ),
                   ),
@@ -145,8 +145,10 @@ class _RecipeAddState extends State<RecipeAdd> {
                           if (_formKey.currentState!.validate()) {
                             await widget.addRecipe(_nameController.text,
                                  _detailController.text);
+                            uploadFile(_nameController.text);
                             _nameController.clear();
                             _detailController.clear();
+                            Navigator.pop(context);
                           }
                         },
                         child: Row(

@@ -96,10 +96,10 @@ class _RecipeListState extends State<RecipeList> {
           Card(
             child: Column(
               children: [
-                Image.network(
-                  recipe.image,
-                  width: 150,
-                ),
+                // Image.network(
+                //   recipe.image,
+                //   width: 150,
+                // ),
                 Text(recipe.name),
                 TextButton(
                     onPressed: () {

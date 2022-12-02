@@ -66,7 +66,7 @@ class ApplicationState extends ChangeNotifier {
               Recipe(
                 detail: doc.data()['detail'] as String,
                 name: doc.data()['name'] as String,
-                image: doc.data()['image'] as String,
+                // image: doc.data()['image'] as String,
                 docid: doc.id,
               ),
             );
@@ -131,7 +131,7 @@ class ApplicationState extends ChangeNotifier {
         .add(<String, dynamic>{
       // 'id': id,
       'name': name,
-      'image': 'https://handong.edu/site/handong/res/img/logo.png',
+      // 'image': 'https://handong.edu/site/handong/res/img/logo.png',
       'detail': detail,
     });
   }
@@ -146,7 +146,7 @@ class ApplicationState extends ChangeNotifier {
         .add(<String, dynamic>{
       // 'id': id,
       'name': name,
-      'image': 'https://handong.edu/site/handong/res/img/logo.png',
+      // 'image': 'https://handong.edu/site/handong/res/img/logo.png',
       'detail': detail,
     });
   }
