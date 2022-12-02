@@ -45,7 +45,7 @@ class ListPage extends StatelessWidget {
                     height: 770,
                     child: ProductList(
                       addProduct: (name, price, detail) =>
-                          appState.addProductToProducts(name, price, detail),
+                          appState.addProductToProducts(name, detail),
                       products: appState.products,
                     ),
                   ),
@@ -89,7 +89,7 @@ class _ProductListState extends State<ProductList> {
                   width: 150,
                 ),
                 Text(product.name),
-                Text(product.price.toString()),
+                // Text(product.price.toString()),
                 TextButton(
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(product: product)));

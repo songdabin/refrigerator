@@ -3,13 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shrine/edit.dart';
+import 'package:shrine/model/recipe.dart';
+import 'package:shrine/recipe_edit.dart';
 import 'ApplicationState.dart';
 
-import 'model/product.dart';
-
-class DetailPage extends StatelessWidget {
-  final Product product;
-  DetailPage({Key? key, required this.product}) : super(key: key);
+class RecipeDetailPage extends StatelessWidget {
+  final Recipe recipe;
+  RecipeDetailPage({Key? key, required this.recipe}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class DetailPage extends StatelessWidget {
         title: const Text('Detail'),
         actions: <Widget>[
           Consumer<ApplicationState>(
-              builder: (context, appState, _) => Row(
+            builder: (context, appState, _) => Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (appState.loggedIn) ...[
@@ -38,7 +38,7 @@ class DetailPage extends StatelessWidget {
                       semanticLabel: 'edit',
                     ),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(product: product)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RecipeEditPage(recipe: recipe)));
                     },
                   ),
                   IconButton(
@@ -47,7 +47,7 @@ class DetailPage extends StatelessWidget {
                       semanticLabel: 'delete',
                     ),
                     onPressed: () {
-                      appState.deleteProduct(product.docid);
+                      appState.deleteRecipe(recipe.docid);
                     },
                   ),
                 ],
@@ -61,9 +61,9 @@ class DetailPage extends StatelessWidget {
         children: [
           Container(
             child: Image.network(
-            product.image,
-            width: 400,
-          ),
+              recipe.image,
+              width: 400,
+            ),
             padding: const EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 10.0),
           ),
           Row(
@@ -76,7 +76,7 @@ class DetailPage extends StatelessWidget {
                 ),
               ),
               Container(width: 20,),
-              Text(product.name,
+              Text(recipe.name,
                 style: const TextStyle(
                   fontWeight: FontWeight.w200,
                   fontSize: 30,
@@ -120,7 +120,7 @@ class DetailPage extends StatelessWidget {
                 ),
               ),
               Container(width: 20,),
-              Text(product.detail,
+              Text(recipe.detail,
                 style: const TextStyle(
                   fontWeight: FontWeight.w200,
                   fontSize: 30,
@@ -135,51 +135,3 @@ class DetailPage extends StatelessWidget {
     );
   }
 }
-
-// class _DetailPageState extends State<DetailPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: CupertinoColors.inactiveGray,
-//         leading: IconButton(
-//           icon: const Icon(
-//             Icons.arrow_back_ios,
-//             semanticLabel: 'back',
-//           ),
-//           onPressed: () {
-//             Navigator.pop(context);
-//           },
-//         ),
-//         title: const Text('Detail'),
-//         actions: <Widget>[
-//           IconButton(
-//             icon: const Icon(
-//               Icons.create,
-//               semanticLabel: 'create',
-//             ),
-//             onPressed: () {
-//               print("add");
-//             },
-//           ),
-//           IconButton(
-//             icon: const Icon(
-//               Icons.delete,
-//               semanticLabel: 'delete',
-//             ),
-//             onPressed: () {
-//               print("delete");
-//             },
-//           ),
-//         ],
-//       ),
-//       body: Column(
-//         children: const [
-//           Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-//           Text(name),
-//         ],
-//       ),
-//       resizeToAvoidBottomInset: false,
-//     );
-//   }
-// }

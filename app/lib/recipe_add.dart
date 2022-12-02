@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:ui';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
@@ -11,12 +11,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shrine/ApplicationState.dart';
-import 'package:shrine/detail.dart';
+import 'package:shrine/model/recipe.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-import 'model/product.dart';
-
-class ProductAddPage extends StatelessWidget {
-  const ProductAddPage({Key? key}) : super(key: key);
+class RecipeAddPage extends StatelessWidget {
+  const RecipeAddPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +30,7 @@ class ProductAddPage extends StatelessWidget {
           },
         ),
         backgroundColor: Colors.black,
-        title: const Text('냉장고 속 식재료 추가'),
+        title: const Text('레시피 추가'),
       ),
       body: Column(
         children: [
@@ -43,10 +42,10 @@ class ProductAddPage extends StatelessWidget {
                 if (appState.loggedIn) ...[
                   SizedBox(
                     height: 200,
-                    child: Add(
-                      addProduct: (name, price, detail) =>
+                    child: RecipeAdd(
+                      addRecipe: (name, detail) =>
                           appState.addProductToProducts(name, detail),
-                      products: appState.products,
+                      recipes: appState.recipes,
                     ),
                   ),
                 ],
@@ -60,26 +59,38 @@ class ProductAddPage extends StatelessWidget {
   }
 }
 
-class Add extends StatefulWidget {
-  const Add({Key? key,
-    required this.addProduct,
-    required this.products,
+class RecipeAdd extends StatefulWidget {
+  const RecipeAdd({Key? key,
+    required this.addRecipe,
+    required this.recipes,
   }) : super(key: key);
 
-  final FutureOr<void> Function(String name, int price, String detail) addProduct;
-  final List<Product> products;
+  final FutureOr<void> Function(String name, String detail) addRecipe;
+  final List<Recipe> recipes;
 
   @override
-  State<Add> createState() => _AddState();
+  State<RecipeAdd> createState() => _RecipeAddState();
 }
 
-class _AddState extends State<Add> {
+class _RecipeAddState extends State<RecipeAdd> {
   final _formKey = GlobalKey<FormState>(debugLabel: '_AddPageState');
   final _nameController = TextEditingController();
-  final _priceController = TextEditingController();
   final _detailController = TextEditingController();
 
-  PickedFile? _image;
+  File? _image;
+
+  Future uploadFile(String filename1) async {
+    if (_image == null) return;
+    final fileName = filename1;
+    final destination = '$fileName.jpg';
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination);
+      await ref.putFile(_image!);
+    } catch (e) {
+      print('error occured');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,19 +114,6 @@ class _AddState extends State<Add> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Enter item name to continue';
-                              }
-                              return null;
-                            },
-                          ),
-                          TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: _priceController,
-                            decoration: const InputDecoration(
-                              hintText: 'item price',
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Enter item price to continue';
                               }
                               return null;
                             },
@@ -145,10 +143,9 @@ class _AddState extends State<Add> {
                       TextButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            await widget.addProduct(_nameController.text,
-                                int.parse(_priceController.text), _detailController.text);
+                            await widget.addRecipe(_nameController.text,
+                                 _detailController.text);
                             _nameController.clear();
-                            _priceController.clear();
                             _detailController.clear();
                           }
                         },
@@ -174,7 +171,11 @@ class _AddState extends State<Add> {
   Future getImageFromGallery() async {
     var image = await ImagePicker.platform.pickImage(source: ImageSource.gallery);
     setState(() {
-      _image = image!;
+      if (image != null) {
+        _image = File(image.path);
+      } else {
+        print('No image selected.');
+      }
     });
   }
 }

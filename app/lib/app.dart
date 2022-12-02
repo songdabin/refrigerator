@@ -2,6 +2,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shrine/list.dart';
 import 'package:shrine/recipe.dart';
+import 'package:shrine/recipe_add.dart';
 
 import 'home.dart';
 import 'login.dart';
@@ -28,6 +29,7 @@ class ShrineApp extends StatelessWidget {
         '/scan': (BuildContext context) => const ScanPage(),
         '/recipe': (BuildContext context) => const RecipePage(),
         // '/detail': (BuildContext context) => const DetailPage(),
+        '/recipe_add': (BuildContext context) => const RecipeAddPage(),
       },
     );
   }

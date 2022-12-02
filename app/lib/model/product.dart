@@ -11,7 +11,6 @@ class Product {
     // required this.id,
     // required this.isFeatured,
     required this.name,
-    required this.price,
     required this.image,
     required this.detail,
     required this.docid,
@@ -21,7 +20,6 @@ class Product {
   // final int id;
   // final bool isFeatured;
   final String name;
-  final int price;
   final String image;
   final String detail;
   final String docid;
@@ -43,7 +41,6 @@ class Product {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> data = {};
     data['name'] = name;
-    data['price'] = price;
     data['image'] = 'https://handong.edu/site/handong/res/img/logo.png';
 
     return data;

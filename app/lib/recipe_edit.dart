@@ -2,22 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shrine/model/recipe.dart';
 import 'ApplicationState.dart';
 
-import 'model/product.dart';
 
-class EditPage extends StatelessWidget {
-  final Product product;
-  EditPage({Key? key, required this.product}) : super(key: key);
+class RecipeEditPage extends StatelessWidget {
+  final Recipe recipe;
+  RecipeEditPage({Key? key, required this.recipe}) : super(key: key);
   final _formKey = GlobalKey<FormState>(debugLabel: '_EditPageState');
   final _nameController = TextEditingController();
-  final _priceController = TextEditingController();
   final _detailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    _nameController.text = product.name;
-    _detailController.text = product.detail;
+    _nameController.text = recipe.name;
+    _detailController.text = recipe.detail;
 
     return Scaffold(
       appBar: AppBar(
@@ -40,8 +39,8 @@ class EditPage extends StatelessWidget {
                 if (appState.loggedIn) ...[
                   TextButton(
                     onPressed: () {
-                      appState.deleteProduct(product.docid);
-                      appState.addProductToProducts(_nameController.text, _detailController.text);
+                      appState.deleteRecipe(recipe.docid);
+                      appState.addRecipe(_nameController.text, _detailController.text);
                       Navigator.pop(context);
                       Navigator.pop(context);
                     },
@@ -72,7 +71,7 @@ class EditPage extends StatelessWidget {
                           children: [
                             Container(
                               child: Image.network(
-                                product.image,
+                                recipe.image,
                                 width: 400,
                               ),
                               padding: const EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 10.0),
@@ -85,19 +84,6 @@ class EditPage extends StatelessWidget {
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Enter item name to continue';
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              keyboardType: TextInputType.number,
-                              controller: _priceController,
-                              decoration: const InputDecoration(
-                                hintText: 'item price',
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Enter item price to continue';
                                 }
                                 return null;
                               },

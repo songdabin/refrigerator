@@ -11,9 +11,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shrine/ApplicationState.dart';
-import 'package:shrine/detail.dart';
+import 'package:shrine/recipe_detail.dart';
 
 import 'model/product.dart';
+import 'model/recipe.dart';
 
 class RecipePage extends StatelessWidget {
   const RecipePage({Key? key}) : super(key: key);
@@ -32,6 +33,17 @@ class RecipePage extends StatelessWidget {
         ),
         backgroundColor: Colors.black,
         title: const Text('레시피'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.add,
+              semanticLabel: 'add',
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/recipe_add');
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -43,10 +55,10 @@ class RecipePage extends StatelessWidget {
                 if (appState.loggedIn) ...[
                   SizedBox(
                     height: 770,
-                    child: ProductList(
-                      addProduct: (name, price, detail) =>
-                          appState.addProductToProducts(name, price, detail),
-                      products: appState.products,
+                    child: RecipeList(
+                      addRecipe: (name, detail) =>
+                          appState.addRecipe(name, detail),
+                      recipes: appState.recipes,
                     ),
                   ),
                 ],
@@ -60,39 +72,38 @@ class RecipePage extends StatelessWidget {
   }
 }
 
-class ProductList extends StatefulWidget {
-  const  ProductList({Key? key,
+class RecipeList extends StatefulWidget {
+  const  RecipeList({Key? key,
     // super.key,
-    required this.addProduct,
-    required this.products,
+    required this.addRecipe,
+    required this.recipes,
   }) : super(key: key);
 
-  final FutureOr<void> Function(String name, int price, String detail) addProduct;
-  final List<Product> products;
+  final FutureOr<void> Function(String name, String detail) addRecipe;
+  final List<Recipe> recipes;
 
   @override
-  State<ProductList> createState() => _ProductListState();
+  State<RecipeList> createState() => _RecipeListState();
 }
 
-class _ProductListState extends State<ProductList> {
+class _RecipeListState extends State<RecipeList> {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
       crossAxisCount: 2,
       children: <Widget>[
-        for (var product in widget.products)
+        for (var recipe in widget.recipes)
           Card(
             child: Column(
               children: [
                 Image.network(
-                  product.image,
+                  recipe.image,
                   width: 150,
                 ),
-                Text(product.name),
-                Text(product.price.toString()),
+                Text(recipe.name),
                 TextButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(product: product)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RecipeDetailPage(recipe: recipe)));
                     },
                     child: const Text("more")
                 ),

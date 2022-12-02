@@ -45,7 +45,7 @@ class ScanPage extends StatelessWidget {
                     height: 200,
                     child: Add(
                       addProduct: (name, price, detail) =>
-                          appState.addProductToProducts(name, price, detail),
+                          appState.addProductToProducts(name, detail),
                       products: appState.products,
                     ),
                   ),
