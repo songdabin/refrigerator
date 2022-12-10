@@ -67,43 +67,36 @@ class RecipeDetailPage extends StatelessWidget {
             ),
             padding: const EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 10.0),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("NAME",
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 30,
-                ),
-              ),
-              Container(width: 20,),
-              Text(recipe.name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w200,
-                  fontSize: 30,
-                ),
-              ),
-            ],
+          const Text("NAME",
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 30,
+            ),
           ),
+
+          Text(recipe.name,
+            style: const TextStyle(
+              fontWeight: FontWeight.w200,
+              fontSize: 30,
+            ),
+          ),
+
           const SizedBox(height: 30,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("DETAIL",
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 30,
-                ),
-              ),
-              Container(width: 20,),
-              Text(recipe.detail,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w200,
-                  fontSize: 30,
-                ),
-              ),
-            ],
+          const Text("DETAIL",
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 30,
+            ),
           ),
+
+          Expanded(child: Text(recipe.detail,
+            style: const TextStyle(
+              fontWeight: FontWeight.w200,
+              fontSize: 30,
+            ),
+          )
+          ),
+
           const SizedBox(height: 30,),
         ],
       ),
