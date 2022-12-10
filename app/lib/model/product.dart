@@ -24,19 +24,6 @@ class Product {
   final String detail;
   final String docid;
 
-  String get assetName => image;
-  // String get assetPackage => 'shrine_images';
-
-  // factory Product.fromMap({required int id, required Map<String, dynamic> map}) {
-  //   return Product(
-  //       // id: id,
-  //       // isFeatured: map['is'],
-  //       name: map['name']??'',
-  //       price: map['price']??'',
-  //       image: map['image']??'',
-  //       detail: map['deatil']??'',
-  //   );
-  // }
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> data = {};

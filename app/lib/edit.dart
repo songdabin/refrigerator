@@ -21,7 +21,7 @@ class EditPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: CupertinoColors.inactiveGray,
+        backgroundColor: Colors.black,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -40,8 +40,9 @@ class EditPage extends StatelessWidget {
                 if (appState.loggedIn) ...[
                   TextButton(
                     onPressed: () {
-                      appState.deleteProduct(product.docid);
-                      appState.addProductToProducts(_nameController.text, _detailController.text);
+                      appState.editProduct(product.docid, _nameController.text, _detailController.text, product.image);
+                      // appState.deleteProduct(product.docid);
+                      // appState.addProductToProducts(_nameController.text, _detailController.text, url);
                       Navigator.pop(context);
                       Navigator.pop(context);
                     },

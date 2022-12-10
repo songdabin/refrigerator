@@ -15,7 +15,7 @@ class DetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: CupertinoColors.inactiveGray,
+        backgroundColor: Colors.black,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -48,6 +48,7 @@ class DetailPage extends StatelessWidget {
                     ),
                     onPressed: () {
                       appState.deleteProduct(product.docid);
+                      Navigator.pop(context);
                     },
                   ),
                 ],
@@ -82,31 +83,6 @@ class DetailPage extends StatelessWidget {
                   fontSize: 30,
                 ),
               ),
-            ],
-          ),
-          const SizedBox(height: 30,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("PRICE",
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 30,
-                ),
-              ),
-              Container(width: 20,),
-              const Text("₩",
-                style: TextStyle(
-                  fontWeight: FontWeight.w200,
-                  fontSize: 30,
-                ),
-              ),
-              // Text(product.price.toString(),
-              //   style: const TextStyle(
-              //     fontWeight: FontWeight.w200,
-              //     fontSize: 30,
-              //   ),
-              // ),
             ],
           ),
           const SizedBox(height: 30,),

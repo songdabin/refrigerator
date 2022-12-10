@@ -20,7 +20,7 @@ class RecipeEditPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: CupertinoColors.inactiveGray,
+        backgroundColor: Colors.black,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -39,8 +39,7 @@ class RecipeEditPage extends StatelessWidget {
                 if (appState.loggedIn) ...[
                   TextButton(
                     onPressed: () {
-                      appState.deleteRecipe(recipe.docid);
-                      appState.addRecipe(_nameController.text, _detailController.text);
+                      appState.editRecipe(recipe.docid, _nameController.text, _detailController.text, recipe.imageurl);
                       Navigator.pop(context);
                       Navigator.pop(context);
                     },
@@ -70,10 +69,10 @@ class RecipeEditPage extends StatelessWidget {
                       child: Column(
                           children: [
                             Container(
-                              // child: Image.network(
-                              //   recipe.image,
-                              //   width: 400,
-                              // ),
+                              child: Image.network(
+                                recipe.imageurl,
+                                width: 400,
+                              ),
                               padding: const EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 10.0),
                             ),
                             TextFormField(

@@ -56,8 +56,8 @@ class RecipePage extends StatelessWidget {
                   SizedBox(
                     height: 770,
                     child: RecipeList(
-                      addRecipe: (name, detail) =>
-                          appState.addRecipe(name, detail),
+                      addRecipe: (name, detail, url) =>
+                          appState.addRecipe(name, detail, url),
                       recipes: appState.recipes,
                     ),
                   ),
@@ -79,7 +79,7 @@ class RecipeList extends StatefulWidget {
     required this.recipes,
   }) : super(key: key);
 
-  final FutureOr<void> Function(String name, String detail) addRecipe;
+  final FutureOr<void> Function(String name, String detail, String url) addRecipe;
   final List<Recipe> recipes;
 
   @override
@@ -96,10 +96,11 @@ class _RecipeListState extends State<RecipeList> {
           Card(
             child: Column(
               children: [
-                // Image.network(
-                //   recipe.image,
-                //   width: 150,
-                // ),
+                Image.network(
+                  recipe.imageurl,
+                  width: 150,
+                  height: 100,
+                ),
                 Text(recipe.name),
                 TextButton(
                     onPressed: () {
@@ -112,124 +113,5 @@ class _RecipeListState extends State<RecipeList> {
           ),
       ],
     );
-  }
-}
-
-class AddPage extends StatefulWidget {
-  const AddPage({Key? key,
-    required this.addProduct,
-    required this.products,
-  }) : super(key: key);
-
-  final FutureOr<void> Function(String name, int price, String detail) addProduct;
-  final List<Product> products;
-
-  @override
-  State<AddPage> createState() => _AddPageState();
-}
-
-class _AddPageState extends State<AddPage> {
-  final _formKey = GlobalKey<FormState>(debugLabel: '_AddPageState');
-  final _nameController = TextEditingController();
-  final _priceController = TextEditingController();
-  final _detailController = TextEditingController();
-
-  PickedFile? _image;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Form(
-              key: _formKey,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                        children: [
-                          TextFormField(
-                            controller: _nameController,
-                            decoration: const InputDecoration(
-                              hintText: 'item name',
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Enter item name to continue';
-                              }
-                              return null;
-                            },
-                          ),
-                          TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: _priceController,
-                            decoration: const InputDecoration(
-                              hintText: 'item price',
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Enter item price to continue';
-                              }
-                              return null;
-                            },
-                          ),
-                          TextFormField(
-                            controller: _detailController,
-                            decoration: const InputDecoration(
-                              hintText: 'item detail',
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Enter item detail to continue';
-                              }
-                              return null;
-                            },
-                          ),
-                        ]
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Column(
-                    children: [
-                      IconButton(
-                        onPressed: getImageFromGallery,
-                        icon: const Icon(Icons.image),
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            await widget.addProduct(_nameController.text,
-                                int.parse(_priceController.text), _detailController.text);
-                            _nameController.clear();
-                            _priceController.clear();
-                            _detailController.clear();
-                          }
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(Icons.send, color: Colors.black,),
-                            SizedBox(width: 4),
-                            Text('Save', style: TextStyle(color: Colors.black),),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-        ]
-    );
-  }
-
-  Future getImageFromGallery() async {
-    var image = await ImagePicker.platform.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = image!;
-    });
   }
 }

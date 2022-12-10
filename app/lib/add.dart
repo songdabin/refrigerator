@@ -1,17 +1,14 @@
 import 'dart:async';
-import 'dart:ui';
+import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shrine/ApplicationState.dart';
-import 'package:shrine/detail.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'model/product.dart';
 
@@ -44,8 +41,8 @@ class ProductAddPage extends StatelessWidget {
                   SizedBox(
                     height: 200,
                     child: Add(
-                      addProduct: (name, price, detail) =>
-                          appState.addProductToProducts(name, detail),
+                      addProduct: (name, price, detail, url) =>
+                          appState.addProductToProducts(name, detail, url),
                       products: appState.products,
                     ),
                   ),
@@ -66,7 +63,7 @@ class Add extends StatefulWidget {
     required this.products,
   }) : super(key: key);
 
-  final FutureOr<void> Function(String name, int price, String detail) addProduct;
+  final FutureOr<void> Function(String name, int price, String detail, String url) addProduct;
   final List<Product> products;
 
   @override
@@ -78,8 +75,25 @@ class _AddState extends State<Add> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   final _detailController = TextEditingController();
+  var url;
 
-  PickedFile? _image;
+  File? _image;
+
+  Future uploadFile(String filename1) async {
+
+    if (_image == null) return;
+    final fileName = filename1;
+    final destination = '$fileName.jpg';
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination);
+      await ref.putFile(_image!);
+      url = await ref.getDownloadURL();
+
+    } catch (e) {
+      print('error occured');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,11 +159,13 @@ class _AddState extends State<Add> {
                       TextButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
+                            await uploadFile(_nameController.text);
                             await widget.addProduct(_nameController.text,
-                                int.parse(_priceController.text), _detailController.text);
+                                int.parse(_priceController.text), _detailController.text, url);
                             _nameController.clear();
                             _priceController.clear();
                             _detailController.clear();
+                            Navigator.pop(context);
                           }
                         },
                         child: Row(
@@ -174,7 +190,11 @@ class _AddState extends State<Add> {
   Future getImageFromGallery() async {
     var image = await ImagePicker.platform.pickImage(source: ImageSource.gallery);
     setState(() {
-      _image = image!;
+      if (image != null) {
+        _image = File(image.path);
+      } else {
+        print('No image selected.');
+      }
     });
   }
 }

@@ -15,7 +15,7 @@ class RecipeDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: CupertinoColors.inactiveGray,
+        backgroundColor: Colors.black,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -48,6 +48,7 @@ class RecipeDetailPage extends StatelessWidget {
                     ),
                     onPressed: () {
                       appState.deleteRecipe(recipe.docid);
+                      Navigator.pop(context);
                     },
                   ),
                 ],
@@ -61,7 +62,7 @@ class RecipeDetailPage extends StatelessWidget {
         children: [
           Container(
             child: Image.network(
-              recipe.image,
+              recipe.imageurl,
               width: 400,
             ),
             padding: const EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 10.0),
@@ -82,31 +83,6 @@ class RecipeDetailPage extends StatelessWidget {
                   fontSize: 30,
                 ),
               ),
-            ],
-          ),
-          const SizedBox(height: 30,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("PRICE",
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 30,
-                ),
-              ),
-              Container(width: 20,),
-              const Text("₩",
-                style: TextStyle(
-                  fontWeight: FontWeight.w200,
-                  fontSize: 30,
-                ),
-              ),
-              // Text(product.price.toString(),
-              //   style: const TextStyle(
-              //     fontWeight: FontWeight.w200,
-              //     fontSize: 30,
-              //   ),
-              // ),
             ],
           ),
           const SizedBox(height: 30,),

@@ -44,8 +44,8 @@ class ListPage extends StatelessWidget {
                   SizedBox(
                     height: 770,
                     child: ProductList(
-                      addProduct: (name, price, detail) =>
-                          appState.addProductToProducts(name, detail),
+                      addProduct: (name, price, detail, url) =>
+                          appState.addProductToProducts(name, detail, url),
                       products: appState.products,
                     ),
                   ),
@@ -67,7 +67,7 @@ class ProductList extends StatefulWidget {
     required this.products,
   }) : super(key: key);
 
-  final FutureOr<void> Function(String name, int price, String detail) addProduct;
+  final FutureOr<void> Function(String name, int price, String detail, String url) addProduct;
   final List<Product> products;
 
   @override
@@ -87,6 +87,7 @@ class _ProductListState extends State<ProductList> {
                 Image.network(
                   product.image,
                   width: 150,
+                  height: 100,
                 ),
                 Text(product.name),
                 // Text(product.price.toString()),

@@ -43,8 +43,8 @@ class RecipeAddPage extends StatelessWidget {
                   SizedBox(
                     height: 200,
                     child: RecipeAdd(
-                      addRecipe: (name, detail) =>
-                          appState.addRecipe(name, detail),
+                      addRecipe: (name, detail, url) =>
+                          appState.addRecipe(name, detail, url),
                       recipes: appState.recipes,
                     ),
                   ),
@@ -65,7 +65,7 @@ class RecipeAdd extends StatefulWidget {
     required this.recipes,
   }) : super(key: key);
 
-  final FutureOr<void> Function(String name, String detail) addRecipe;
+  final FutureOr<void> Function(String name, String detail, String url) addRecipe;
   final List<Recipe> recipes;
 
   @override
@@ -76,6 +76,7 @@ class _RecipeAddState extends State<RecipeAdd> {
   final _formKey = GlobalKey<FormState>(debugLabel: '_AddPageState');
   final _nameController = TextEditingController();
   final _detailController = TextEditingController();
+  var url;
 
   File? _image;
 
@@ -87,6 +88,7 @@ class _RecipeAddState extends State<RecipeAdd> {
       final ref = firebase_storage.FirebaseStorage.instance
           .ref(destination);
       await ref.putFile(_image!);
+      url = await ref.getDownloadURL();
     } catch (e) {
       print('error occured');
     }
@@ -143,9 +145,9 @@ class _RecipeAddState extends State<RecipeAdd> {
                       TextButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
+                            await uploadFile(_nameController.text);
                             await widget.addRecipe(_nameController.text,
-                                 _detailController.text);
-                            uploadFile(_nameController.text);
+                                 _detailController.text, url);
                             _nameController.clear();
                             _detailController.clear();
                             Navigator.pop(context);

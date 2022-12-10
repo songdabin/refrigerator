@@ -44,8 +44,8 @@ class ScanPage extends StatelessWidget {
                   SizedBox(
                     height: 200,
                     child: Add(
-                      addProduct: (name, price, detail) =>
-                          appState.addProductToProducts(name, detail),
+                      addProduct: (name, price, detail, url) =>
+                          appState.addProductToProducts(name, detail, url),
                       products: appState.products,
                     ),
                   ),
@@ -66,7 +66,7 @@ class Add extends StatefulWidget {
     required this.products,
   }) : super(key: key);
 
-  final FutureOr<void> Function(String name, int price, String detail) addProduct;
+  final FutureOr<void> Function(String name, int price, String detail, String url) addProduct;
   final List<Product> products;
 
   @override
@@ -78,6 +78,7 @@ class _AddState extends State<Add> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   final _detailController = TextEditingController();
+  var url = "http";
 
   PickedFile? _image;
 
@@ -146,7 +147,7 @@ class _AddState extends State<Add> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             await widget.addProduct(_nameController.text,
-                                int.parse(_priceController.text), _detailController.text);
+                                int.parse(_priceController.text), _detailController.text, url);
                             _nameController.clear();
                             _priceController.clear();
                             _detailController.clear();

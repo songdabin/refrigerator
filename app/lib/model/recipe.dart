@@ -4,12 +4,14 @@ class Recipe {
     // required this.image,
     required this.detail,
     required this.docid,
+    required this.imageurl,
   });
 
   final String name;
   // final String image;
   final String detail;
   final String docid;
+  final String imageurl;
 
   // String get assetName => image;
 
